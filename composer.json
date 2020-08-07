@@ -1,0 +1,14 @@
+{
+    "require": {
+        "symfony/http-client": "^5.1",
+        "psr/http-client": "^1.0",
+        "nyholm/psr7": "^1.3",
+        "symfony/filesystem": "^5.1",
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "ArticlesApp\\": "src/"
+        }
+    }
+}
