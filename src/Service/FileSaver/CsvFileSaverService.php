@@ -16,9 +16,11 @@ use ArticlesApp\Serializer\CsvArticleSerializer;
 class CsvFileSaverService {
 
     private $filesystem;
+    private $serializer;
 
-    public function __construct() {
-        $this->filesystem = new Filesystem();
+    public function __construct(Filesystem $filesystem, CsvArticleSerializer $serializer) {
+        $this->filesystem = $filesystem;
+        $this->serializer = $serializer;
     }
 
     public function saveArticles(string $fileName, array $articles, AbstractFileSaveMode $fileSaveMode): void {
@@ -49,16 +51,14 @@ class CsvFileSaverService {
 
     private function prepareFileConent(array $articles, AbstractFileSaveMode $fileSaveMode): string {
 
-        $serializer = new CsvArticleSerializer();
-
         $result = '';
 
         if ($fileSaveMode instanceof NewFileMode) {
-            $result .= $serializer->getCsvHeader() . self::END_LINE;
+            $result .= $this->serializer->getCsvHeader() . self::END_LINE;
         }
 
         foreach ($articles as $article) {
-            $result .= $serializer->serialize($article) . self::END_LINE;
+            $result .= $this->serializer->serialize($article) . self::END_LINE;
         }
 
         return $result;

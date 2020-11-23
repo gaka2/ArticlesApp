@@ -1,0 +1,27 @@
+parameters:
+    application.arguments: []
+
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    ArticlesApp\:
+        resource: '../src/*'
+        exclude: '../src/{Application/ApplicationContainer.php,console.php}'
+
+    ArticlesApp\Application\CommandLineApplication:
+        arguments:
+            $arguments: '%application.arguments%'
+        public: true
+
+    ArticlesApp\Command\CommandFactory:
+        arguments: [['@ArticlesApp\Command\SimpleCommand', '@ArticlesApp\Command\ExtendedCommand']]
+
+    ArticlesApp\Service\ExternalApi\ExternalApiClientServiceFactory:
+        arguments: [['@ArticlesApp\Service\ExternalApi\ExternalApiClientService']]
+
+    Symfony\Component\Filesystem\Filesystem: ~
+
+    Psr\Http\Client\ClientInterface:
+        class: Symfony\Component\HttpClient\Psr18Client

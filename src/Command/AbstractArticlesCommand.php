@@ -17,9 +17,9 @@ abstract class AbstractArticlesCommand extends AbstractCommand {
     private $fileSaveMode;
     private $articlesService;
 
-    public function __construct(string $name, AbstractFileSaveMode $fileSaveMode) {
+    public function __construct(string $name, AbstractFileSaveMode $fileSaveMode, ArticlesService $articlesService) {
         $this->fileSaveMode = $fileSaveMode;
-        $this->articlesService = new ArticlesService();
+        $this->articlesService = $articlesService;
 
         parent::__construct($name, self::REQUIRED_ARGUMENTS);
     }

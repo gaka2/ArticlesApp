@@ -14,16 +14,24 @@ use ArticlesApp\Service\FileSaver\CsvFileSaverService;
  */
 class ArticlesService {
 
+    private $externalApiClientServiceFactory;
+    private $mapperService;
+    private $fileSaverService;
+
+    public function __construct(ExternalApiClientServiceFactory $externalApiClientServiceFactory, XmlMapperService $mapperService, CsvFileSaverService $fileSaverService) {
+        $this->externalApiClientServiceFactory = $externalApiClientServiceFactory;
+        $this->mapperService = $mapperService;
+        $this->fileSaverService = $fileSaverService;
+    }
+
     public function getArticles(string $url): array {
-        $apiClientService = ExternalApiClientServiceFactory::createForUrl($url);
+        $apiClientService = $this->externalApiClientServiceFactory->createForUrl($url);
         $xmlDocument = $apiClientService->getDataFromExternalApi();
 
-        $mapperService = new XmlMapperService();
-        return $mapperService->mapToBusinessDomainObjects($xmlDocument);
+        return $this->mapperService->mapToBusinessDomainObjects($xmlDocument);
     }
 
     public function saveArticlesToFile(string $fileName, array $articles, AbstractFileSaveMode $fileSaveMode): void {
-        $fileSaverService = new CsvFileSaverService();
-        $fileSaverService->saveArticles($fileName, $articles, $fileSaveMode);
+        $this->fileSaverService->saveArticles($fileName, $articles, $fileSaveMode);
     }
 }

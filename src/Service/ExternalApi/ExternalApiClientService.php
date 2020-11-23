@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ArticlesApp\Service\ExternalApi;
 
 use Psr\Http\Client\ClientInterface;
-use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author Karol Gancarczyk
@@ -17,8 +16,8 @@ class ExternalApiClientService extends AbstractExternalApiClientService {
 
     private $client;
 
-    public function __construct() {
-        $this->client = new Psr18Client();
+    public function __construct(ClientInterface $client) {
+        $this->client = $client;
     }
 
     public function getDataFromExternalApi(): \SimpleXMLElement {

@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace ArticlesApp\Command;
 
 use ArticlesApp\Command\AbstractCommand;
-use ArticlesApp\Command\SimpleCommand;
-use ArticlesApp\Command\ExtendedCommand;
 
 /**
  * @author Karol Gancarczyk
  */
 class CommandFactory {
 
-    private const REGISTERED_COMMANDS = [
-        SimpleCommand::class,
-        ExtendedCommand::class,
-    ];
+    private $registeredCommands;
 
-    public static function createFromName(string $name): AbstractCommand {
-        foreach (self::REGISTERED_COMMANDS as $commandClass) {
-            $command = new $commandClass();
+    public function __construct(array $registeredCommands) {
+        $this->registeredCommands = $registeredCommands;
+    }
+
+    public function createFromName(string $name): AbstractCommand {
+        foreach ($this->registeredCommands as $command) {
             if ($command->getName() === $name) {
                 return $command;
             }

@@ -14,9 +14,11 @@ class CommandLineApplication {
     private const ERROR_MESSAGE_FOR_USER = 'Unexpected error occurred while running the application';
 
     private $arguments = [];
+    private $commandFactory;
 
-    public function __construct(array $arguments) {
+    public function __construct(array $arguments, CommandFactory $commandFactory) {
         $this->arguments = $arguments;
+        $this->commandFactory = $commandFactory;
     }
 
     public function run(): void {
@@ -25,7 +27,7 @@ class CommandLineApplication {
                 throw new \InvalidArgumentException('Missing command name');
             }
 
-            $command = CommandFactory::createFromName($this->arguments[1]);
+            $command = $this->commandFactory->createFromName($this->arguments[1]);
             $command->setArguments(array_slice($this->arguments, 2));
             $command->execute();
 
