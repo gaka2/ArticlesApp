@@ -6,6 +6,12 @@ services:
         autowire: true
         public: false
 
+    _instanceof:
+        ArticlesApp\Command\AbstractCommand:
+            tags: ['application.command']
+        ArticlesApp\Service\ExternalApi\AbstractExternalApiClientService:
+            tags: ['application.external_api_client']
+
     ArticlesApp\:
         resource: '../src/*'
         exclude: '../src/{Application/ApplicationContainer.php,console.php}'
@@ -16,10 +22,12 @@ services:
         public: true
 
     ArticlesApp\Command\CommandFactory:
-        arguments: [['@ArticlesApp\Command\SimpleCommand', '@ArticlesApp\Command\ExtendedCommand']]
+        arguments:
+            - !tagged_iterator application.command
 
     ArticlesApp\Service\ExternalApi\ExternalApiClientServiceFactory:
-        arguments: [['@ArticlesApp\Service\ExternalApi\ExternalApiClientService']]
+        arguments:
+            - !tagged_iterator application.external_api_client
 
     Symfony\Component\Filesystem\Filesystem: ~
 

@@ -13,7 +13,7 @@ class ExternalApiClientServiceFactory {
 
     private $registeredServices;
 
-    public function __construct(array $registeredServices) {
+    public function __construct(iterable $registeredServices) {
         $this->registeredServices = $registeredServices;
     }
 

@@ -13,7 +13,7 @@ class CommandFactory {
 
     private $registeredCommands;
 
-    public function __construct(array $registeredCommands) {
+    public function __construct(iterable $registeredCommands) {
         $this->registeredCommands = $registeredCommands;
     }
 
